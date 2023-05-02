@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Clone the project') {
             steps {
-                git branch:'master', url:'https://github.com/victor-fpereira/curso_cypress_api.git'
+                git branch:'master', url:'https://github.com/victor-fpereira/Ebac_Cypress.git'
             }
         }
         stage('Execute tests') {
