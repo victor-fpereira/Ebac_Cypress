@@ -39,10 +39,8 @@ describe('Funcionalidade Página de produtos', () => {
     });
 
     it.only('Deve adicionar produtos ao carrinho - Usando Comando customizado', () => {
-        cy.addProdutos('Aero Daily Fitness Tee', 'M', 'Black', 2)
+        // cy.addProdutos('Aero Daily Fitness Tee', 'M', 'Black', 2) // Produto fora de estoque
+        cy.addProdutos('Abominable Hoodie', 'M', 'Blue', 4)
     })
 
-    it.only('Deve adicionar produtos ao carrinho - Usando Comando customizado', () => {
-        cy.addProdutos('Ariel Roll Sleeve Sweatshirt', 'XS', 'Red', 1)
-    })
 });
