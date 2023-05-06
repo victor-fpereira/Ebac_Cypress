@@ -15,7 +15,7 @@ context('Funcionalidade login', () => {
 
     // Executa antes de cada teste
     beforeEach(() => {
-        cy.visit('http://lojaebac.ebaconline.art.br/minha-conta')
+        cy.visit('http://lojaebac.ebaconline.art.br/minha-conta/')
     });
 
     // // Executa despois de cada teste
