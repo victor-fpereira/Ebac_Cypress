@@ -13,13 +13,13 @@ Cypress.Commands.add('login', (user, pass) => {
         body: fd
     }).then((resp) => {
         cy.log(resp)
-        resp.headers['set-cookie'].forEach((cookie) => {
-            const firstPart = cookie.split(';')[0]
-            const divider = firstPart.indexOf('=')
-            const key = firstPart.substring(0, divider)
-            const value = firstPart.substring(divider + 1, firstPart.length)
-            cy.setCookie(key, value)
-        })
+        // resp.headers['set-cookie'].forEach((cookie) => {
+        //     const firstPart = cookie.split(';')[0]
+        //     const divider = firstPart.indexOf('=')
+        //     const key = firstPart.substring(0, divider)
+        //     const value = firstPart.substring(divider + 1, firstPart.length)
+        //     cy.setCookie(key, value)
+        // })
     })
 })
 
