@@ -9,10 +9,12 @@ Cypress.Commands.add('login', (user, pass) => {
 
     cy.request({
         method: 'POST',
-        url: 'http://lojaebac.ebaconline.art.br/minha-conta/',
+        url: 'minha-conta/',
         body: fd
     }).then((resp) => {
-        cy.log(resp)
+        cy.log('Response ' + resp)
+        cy.log('Response body ' + resp.body)
+        cy.log('Response headers ' + resp.headers)
         resp.headers['set-cookie'].forEach((cookie) => {
             const firstPart = cookie.split(';')[0]
             const divider = firstPart.indexOf('=')
@@ -35,13 +37,13 @@ Cypress.Commands.add('adicionaProdutoCarrinho', () => {
 
     cy.request({
         method: 'POST',
-        url: 'http://lojaebac.ebaconline.art.br/product/abominable-hoodie/',
+        url: 'product/abominable-hoodie/',
         body: fd
     })  
 })
 
 Cypress.Commands.add('abrePaginaCheckout', () => {
 
-    cy.visit('http://lojaebac.ebaconline.art.br/carrinho/')
+    cy.visit('carrinho/')
     cy.get('.checkout-button').click()
 })
