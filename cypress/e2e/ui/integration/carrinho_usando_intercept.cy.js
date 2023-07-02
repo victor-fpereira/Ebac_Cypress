@@ -10,14 +10,15 @@ describe('Usando o Application Actions', () => {
   
   function intercept(expectedCodeResponse, expectBodyResponse) {
   
-    cy.intercept({
-      method: "POST",
-      url: "/?wc-ajax=get_refreshed_fragments",
-    }, resp => {
-      resp.reply({
-        status_code: expectedCodeResponse,
-        body: `${expectBodyResponse}`
-      })
+    cy.intercept('POST', '/?wc-ajax=get_refreshed_fragments').as('changeProductQuantity')
+    cy.wait('@changeProductQuantity').then((interception) => {
+
+      // Accessa a responta interceptada
+      const response = interception.response;
+  
+      // Realiza as validações da responta
+      expect(response.statusCode).to.equal(expectedCodeResponse);
+      expect(response.body.fragments['span.cart-mobile']).to.contain(expectBodyResponse)
     })
   }
 
@@ -33,39 +34,57 @@ describe('Usando o Application Actions', () => {
 
     // Abre o carrinho
     cy.get('.woocommerce-message > .button').click()
-
   }
 
+  function addProduct(quantity) {
 
-  it.only('Utiliza o intercept para validar a compra', () => {
+    for (let index = 0; index < quantity; index++) {
+      cy.get('.plus').click()
+    }
+  }
 
-    let responseCode = 200
-    let responseBody = "Carrinho com produto atualizado"
+  function subtractProduct(quantity) {
 
-    intercept(responseCode, responseBody)
+    for (let index = 0; index < quantity; index++) {
+      cy.get('.minus').click()
+    }
+  }
+
+  it('Utiliza o intercept para validar a compra de dois produtos', () => {
+
+    const expectedCodeResponse = 200
+    const expectBodyResponse = '2'
     openCart()
- 
-    // TODO - validar o html da página que foi alterado
-
+    addProduct(1)
+    intercept(expectedCodeResponse, expectBodyResponse)
 
   })
 
-  //, atualização e exclusão de um item do carrinho
+  function updateProduct(quantity) {
+      
+      cy.get('div > input.input-text.qty.text').clear().type(quantity)
+      cy.get('.actions > .clearfix > .pull-right').click()
+  }
 
-  it('Utiliza o intercept para validar a remoção do produto', () => {
+  // Atualização e exclusão de um item do carrinho
+
+  it('Utiliza o intercept para validar a remoção de um produto', () => {
   
-    intercept(200, "Carrinho com produto atualizado")
+    const expectedCodeResponse = 200
+    const expectBodyResponse = '0'
     openCart()
-
-    // Clica no botão de remover do carrinho
-
+    subtractProduct(1)
+    intercept(expectedCodeResponse, expectBodyResponse)
 
   })
 
   it('Utiliza o intercept para validar a atualização do produto', () => {
   
-    intercept(200, "Carrinho com produto atualizado")
+    const expectedCodeResponse = 200
+    const expectBodyResponse = '5'
     openCart()
+    updateProduct(5)
+    intercept(expectedCodeResponse, expectBodyResponse)
 
   })
 

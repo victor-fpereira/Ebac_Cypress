@@ -15,13 +15,16 @@ Cypress.Commands.add('login', (user, pass) => {
         cy.log('Response ' + resp)
         cy.log('Response body ' + resp.body)
         cy.log('Response headers ' + resp.headers)
-        resp.headers['set-cookie'].forEach((cookie) => {
-            const firstPart = cookie.split(';')[0]
-            const divider = firstPart.indexOf('=')
-            const key = firstPart.substring(0, divider)
-            const value = firstPart.substring(divider + 1, firstPart.length)
-            cy.setCookie(key, value)
-        })
+
+        // O código abaixo está comentado porque o site não está retornando o cookie
+
+        // resp.headers['set-cookie'].forEach((cookie) => {
+        //     const firstPart = cookie.split(';')[0]
+        //     const divider = firstPart.indexOf('=')
+        //     const key = firstPart.substring(0, divider)
+        //     const value = firstPart.substring(divider + 1, firstPart.length)
+        //     cy.setCookie(key, value)
+        // })
     })
 })
 
@@ -46,4 +49,20 @@ Cypress.Commands.add('abrePaginaCheckout', () => {
 
     cy.visit('carrinho/')
     cy.get('.checkout-button').click()
+})
+
+Cypress.Commands.add('validaPaginaCheckoutAberta', () => {
+
+    // Verifica se o usuário está na página de checkout
+    
+    // 1 - Verifica se o label checkout está visível
+    cy.get('.page-title').should("have.text","Checkout")
+
+    // 2 - Verfica se o label detalhes de faturamento está visível
+    cy.get('.woocommerce-billing-fields > h3').should("have.text","Detalhes de faturamento")
+
+    // 3 - Verifica se o label Your Order está visível
+    cy.get('#order_review_heading').should("have.text","Your order")
+
+
 })
