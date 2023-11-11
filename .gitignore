@@ -1,3 +1,7 @@
 node_modules
 results
 videos
+mochawesome-report
+mochawesome.json
+cypress.config.js
+screenshots
